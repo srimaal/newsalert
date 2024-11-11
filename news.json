@@ -1,0 +1,15 @@
+[
+    {
+        "text": "Breaking News: Market hits record high!",
+        "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
+    },
+    {
+        "text": "New technology set to revolutionize AI.",
+        "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
+    },
+    {
+        "text": "Sports: Local team wins championship.",
+        "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
+    }
+    // Add more news items here
+]
