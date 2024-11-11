@@ -107,7 +107,7 @@
         const newsContainer = document.getElementById("news-container");
         const newsImage = document.getElementById("news-image");
         const typingSpeed = 100;  // Speed of typewriter effect
-        const pauseBetweenNews = 2000; // Time to pause between news items
+        const pauseBetweenNews = 20000; // Time to pause between news items
         const defaultImageUrl = "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"; // Default image URL
 
         // Typewriter effect function
@@ -142,7 +142,7 @@
         // Adjust font size to fit the container
         function adjustFontSize() {
             const containerWidth = newsContainer.clientWidth;
-            let fontSize = 24; // Base font size
+            let fontSize = 48; // Base font size
             newsContainer.style.fontSize = `${fontSize}px`;
 
             while (newsContainer.scrollWidth > containerWidth && fontSize > 12) {
