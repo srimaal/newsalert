@@ -51,6 +51,7 @@
         const newsImage = document.getElementById("news-image");
         const typingSpeed = 100;
         const pauseBetweenNews = 20000;
+        const defaultImageUrl = "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"; // Default image URL
 
         function typeNews() {
             if (newsItems.length === 0) {
@@ -58,11 +59,12 @@
                 return;
             }
 
-            newsImage.src = newsItems[currentNewsIndex].imageUrl || "";
-            newsImage.style.display = newsItems[currentNewsIndex].imageUrl ? 'block' : 'none';
+            const currentItem = newsItems[currentNewsIndex];
+            newsImage.src = currentItem.imageUrl || defaultImageUrl; // Use default image if no image is provided
+            newsImage.style.display = currentItem.imageUrl || defaultImageUrl ? 'block' : 'none';
 
-            if (charIndex < newsItems[currentNewsIndex].text.length) {
-                newsContainer.textContent += newsItems[currentNewsIndex].text.charAt(charIndex);
+            if (charIndex < currentItem.text.length) {
+                newsContainer.textContent += currentItem.text.charAt(charIndex);
                 charIndex++;
                 adjustFontSize();
                 setTimeout(typeNews, typingSpeed);
