@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS for News Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .news-item {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage News Items</h1>
+    <div id="news-form-container"></div>
+    <button onclick="saveNews()">Save News</button>
+
+    <script>
+        const formContainer = document.getElementById('news-form-container');
+
+        // Load existing news items from local storage or create empty items
+        const existingNews = JSON.parse(localStorage.getItem('newsItems')) || Array(10).fill({ text: '', imageUrl: '' });
+
+        // Generate the form inputs for 10 news items
+        existingNews.forEach((item, index) => {
+            const newsItemDiv = document.createElement('div');
+            newsItemDiv.className = 'news-item';
+            newsItemDiv.innerHTML = `
+                <label>News Item ${index + 1} Text:</label>
+                <input type="text" id="news-text-${index}" value="${item.text}">
+                <label>Image URL:</label>
+                <input type="text" id="news-image-${index}" value="${item.imageUrl}">
+            `;
+            formContainer.appendChild(newsItemDiv);
+        });
+
+        function saveNews() {
+            const updatedNews = existingNews.map((_, index) => ({
+                text: document.getElementById(`news-text-${index}`).value,
+                imageUrl: document.getElementById(`news-image-${index}`).value
+            }));
+
+            localStorage.setItem('newsItems', JSON.stringify(updatedNews));
+            alert('News items saved successfully!');
+        }
+    </script>
+</body>
+</html>

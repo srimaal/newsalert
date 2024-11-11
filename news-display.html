@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Alerts with Images</title>
+    <style>
+        #news-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px;
+        }
+        #news-container {
+            font-family: Arial, sans-serif;
+            font-size: 44px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid black;
+            display: inline-block;
+            animation: blink-caret 0.75s step-end infinite;
+            flex: 1;
+        }
+        #image-container img {
+            max-width: 300px;
+            height: auto;
+            margin-left: 20px;
+        }
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="news-wrapper">
+        <div id="news-container"></div>
+        <div id="image-container">
+            <img id="news-image" src="" alt="News Image" style="display: none;">
+        </div>
+    </div>
+
+    <script>
+        const newsItems = JSON.parse(localStorage.getItem('newsItems')) || [];
+        let currentNewsIndex = 0;
+        let charIndex = 0;
+        const newsContainer = document.getElementById("news-container");
+        const newsImage = document.getElementById("news-image");
+        const typingSpeed = 100;
+        const pauseBetweenNews = 20000;
+
+        function typeNews() {
+            if (newsItems.length === 0) {
+                newsContainer.textContent = "No news items available. Please add news in the CMS.";
+                return;
+            }
+
+            newsImage.src = newsItems[currentNewsIndex].imageUrl || "";
+            newsImage.style.display = newsItems[currentNewsIndex].imageUrl ? 'block' : 'none';
+
+            if (charIndex < newsItems[currentNewsIndex].text.length) {
+                newsContainer.textContent += newsItems[currentNewsIndex].text.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeNews, typingSpeed);
+            } else {
+                setTimeout(() => {
+                    charIndex = 0;
+                    newsContainer.textContent = "";
+                    currentNewsIndex = (currentNewsIndex + 1) % newsItems.length;
+                    typeNews();
+                }, pauseBetweenNews);
+            }
+        }
+
+        typeNews();
+    </script>
+</body>
+</html>
