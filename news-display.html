@@ -5,34 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Alerts with Images</title>
     <style>
-        #news-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 20px;
-            overflow: hidden;
-        }
-        #news-container {
-            font-family: Arial, sans-serif;
-            font-size: 24px; /* Base size, will be adjusted dynamically */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: inline-block;
-            flex: 1;
-            border-right: 2px solid black;
-            animation: blink-caret 0.75s step-end infinite;
-        }
-        #image-container img {
-            max-width: 300px;
-            height: auto;
-            margin-left: 20px;
-        }
-        @keyframes blink-caret {
-            50% {
-                border-color: transparent;
-            }
-        }
+        /* Add your CSS styles here */
     </style>
 </head>
 <body>
@@ -44,58 +17,68 @@
     </div>
 
     <script>
-        const newsItems = JSON.parse(localStorage.getItem('newsItems')) || [];
-        let currentNewsIndex = 0;
-        let charIndex = 0;
-        const newsContainer = document.getElementById("news-container");
-        const newsImage = document.getElementById("news-image");
-        const typingSpeed = 100;
-        const pauseBetweenNews = 20000;
-        const defaultImageUrl = "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"; // Default image URL
+        // Fetch the news data from the JSON file
+        fetch('news.json')
+            .then(response => response.json())
+            .then(newsItems => {
+                let currentNewsIndex = 0;
+                let charIndex = 0;
+                const newsContainer = document.getElementById("news-container");
+                const newsImage = document.getElementById("news-image");
+                const typingSpeed = 100;
+                const pauseBetweenNews = 20000;
+                const defaultImageUrl = "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"; // Default image URL
 
-        function typeNews() {
-            if (newsItems.length === 0) {
-                newsContainer.textContent = "No news items available. Please add news in the CMS.";
-                return;
-            }
+                // Type news with typewriter effect
+                function typeNews() {
+                    if (newsItems.length === 0) {
+                        newsContainer.textContent = "No news items available. Please add news in the CMS.";
+                        return;
+                    }
 
-            const currentItem = newsItems[currentNewsIndex];
-            newsImage.src = currentItem.imageUrl || defaultImageUrl; // Use default image if no image is provided
-            newsImage.style.display = currentItem.imageUrl || defaultImageUrl ? 'block' : 'none';
+                    const currentItem = newsItems[currentNewsIndex];
+                    // Use default image if no image URL is provided
+                    newsImage.src = currentItem.imageUrl || defaultImageUrl;
+                    newsImage.style.display = currentItem.imageUrl || defaultImageUrl ? 'block' : 'none';
 
-            if (charIndex < currentItem.text.length) {
-                newsContainer.textContent += currentItem.text.charAt(charIndex);
-                charIndex++;
-                adjustFontSize();
-                setTimeout(typeNews, typingSpeed);
-            } else {
+                    if (charIndex < currentItem.text.length) {
+                        newsContainer.textContent += currentItem.text.charAt(charIndex);
+                        charIndex++;
+                        adjustFontSize();
+                        setTimeout(typeNews, typingSpeed);
+                    } else {
+                        setTimeout(() => {
+                            charIndex = 0;
+                            newsContainer.textContent = "";
+                            currentNewsIndex = (currentNewsIndex + 1) % newsItems.length;
+                            typeNews();
+                        }, pauseBetweenNews);
+                    }
+                }
+
+                // Adjust font size to fit the container
+                function adjustFontSize() {
+                    const containerWidth = newsContainer.clientWidth;
+                    let fontSize = 24; // Base font size
+                    newsContainer.style.fontSize = `${fontSize}px`;
+
+                    while (newsContainer.scrollWidth > containerWidth && fontSize > 12) {
+                        fontSize--;
+                        newsContainer.style.fontSize = `${fontSize}px`;
+                    }
+                }
+
+                // Start typing the first news item
+                typeNews();
+
+                // Auto-refresh every 4 minutes (240,000 milliseconds)
                 setTimeout(() => {
-                    charIndex = 0;
-                    newsContainer.textContent = "";
-                    currentNewsIndex = (currentNewsIndex + 1) % newsItems.length;
-                    typeNews();
-                }, pauseBetweenNews);
-            }
-        }
-
-        function adjustFontSize() {
-            const containerWidth = newsContainer.clientWidth;
-            let fontSize = 24; // Base font size
-            newsContainer.style.fontSize = `${fontSize}px`;
-
-            while (newsContainer.scrollWidth > containerWidth && fontSize > 12) {
-                fontSize--;
-                newsContainer.style.fontSize = `${fontSize}px`;
-            }
-        }
-
-        // Start typing the first news item
-        typeNews();
-
-        // Auto-refresh every 4 minutes (240,000 milliseconds)
-        setTimeout(() => {
-            location.reload();
-        }, 240000); // 4 minutes in milliseconds
+                    location.reload();
+                }, 240000); // 4 minutes in milliseconds
+            })
+            .catch(error => {
+                console.error('Error fetching news:', error);
+            });
     </script>
 </body>
 </html>
