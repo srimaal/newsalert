@@ -89,6 +89,11 @@
 
         // Start typing the first news item
         typeNews();
+
+        // Auto-refresh every 4 minutes (240,000 milliseconds)
+        setTimeout(() => {
+            location.reload();
+        }, 240000); // 4 minutes in milliseconds
     </script>
 </body>
 </html>
