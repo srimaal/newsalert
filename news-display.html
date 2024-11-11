@@ -5,7 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Alerts with Images</title>
     <style>
-        /* Add your CSS styles here */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #news-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px;
+            overflow: hidden;
+            width: 90%;
+            max-width: 1200px;
+        }
+        #news-container {
+            font-size: 24px;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            flex: 1;
+            border-right: 2px solid black;
+            animation: blink-caret 0.75s step-end infinite;
+            font-family: Arial, sans-serif;
+        }
+        #image-container img {
+            max-width: 300px;
+            height: auto;
+            margin-left: 20px;
+        }
+        @keyframes blink-caret {
+            50% {
+                border-color: transparent;
+            }
+        }
     </style>
 </head>
 <body>
@@ -17,9 +58,14 @@
     </div>
 
     <script>
-        // Fetch the news data from the JSON file
+        // Try to fetch news.json file
         fetch('news.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load news.json');
+                }
+                return response.json();
+            })
             .then(newsItems => {
                 let currentNewsIndex = 0;
                 let charIndex = 0;
@@ -78,6 +124,7 @@
             })
             .catch(error => {
                 console.error('Error fetching news:', error);
+                document.body.innerHTML = "<h1>Error loading news. Please check your connection or try again later.</h1>";
             });
     </script>
 </body>
