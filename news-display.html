@@ -36,7 +36,6 @@
             border-right: 2px solid black;
             animation: blink-caret 0.75s step-end infinite;
             font-family: Arial, sans-serif;
-            
         }
         #image-container img {
             max-width: 300px;
@@ -62,44 +61,43 @@
         // Hardcoded array of news items with text and image URL
         const newsItems = [
             {
-                "text": "මහ මැතිවරණයට අදාළව පැමිණිලි 2580ක්",
+                "text": "හිමිකරුවන් නිවෙස්වල නැහැ.. නිල ඡන්ද දැන්වීම් පත්‍රිකා ලක්ෂ 5 ක් තැපෑලේ ඉතිරි වෙයි..!",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "මෙරට සහල් සහ වී තොග සම්බන්ධ සමීක්ෂණයේ වාර්තාව අමාත්‍යාංශ ලේකම් වෙත - පාරිභෝගික කටයුතු පිළිබඳ අධිකාරිය",
+                "text": "ගුවන් යානා ප්‍රමාදයන් ගැන මගීන් දැනුවත් කිරීමට වැඩපිළිවෙලක්... කටයුතු සම්බන්ධීකරණයට විශේෂ ඒකකයක් ස්ථාපනයටත් ඇමති විජිතගෙන් උපදෙස්...",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "හිටපු ඇමතිවරු භාවිත කළ නිල නිවාස 27 ක් රජයට...",
+                "text": "Global temperatures rise, leading to climate concerns.",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "මහ මැතිවරණය හේතුවෙන් දිවයින පුරා පිහිටි සුරාසැල් නොවැම්බර් 14 සහ 15 යන දෙදින වසා තැබීමට නියමිත බව සුරාබදු දෙපාර්තමේන්තුව පවසනවා.",
+                "text": "Scientists discover new species in the Amazon rainforest.",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "ශ්‍රී ලන්කන් ගුවන් යානා ප්‍රමාදය ගැන ලැබුණු පැමිණිලි සොයා බැලීම සඳහා අමාත්‍ය විජිත හේරත් කටුනායක ගුවන් තොටුපොළේ නිරීක්ෂණය සංචාරයක නිරත වී තිබෙනවා..",
+                "text": "Stock market sees record gains amid economic growth.",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "මහ මැතිවරණයේ ප්‍රචාරක කටයුතු අද (11) මධ්‍යම රාත්‍රියෙන් අවසන් වීමට නියමිතව තිබෙනවා..",
+                "text": "New space mission aims to explore Mars more deeply.",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "හිමිකරුවන් නිවෙස්වල නැහැ.. නිල ඡන්ද දැන්වීම් පත්‍රිකා ලක්ෂ 5 ක් තැපෑලේ ඉතිරි වෙයි..
-.",
+                "text": "Health experts warn of new flu strain spreading.",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "ජනාධිපතිතුමනි ඔබතුමා දුන්නු පොරොන්දු ටික කෙඳිරි නොගා ජනතාවට ලබා දෙන්න - ජොන්ස්ටන්.",
+                "text": "World leaders gather for the climate change summit.",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "සංචාරක නවසීලන්ක කණ්ඩායම හා ශ්‍රී ලංකා කණ්ඩායම අතර විස්සයි විස්ස තරගාවලියේ දෙවන හා අවසන් තරගය ලකුණු 3 කින් ජය ගැනීමට නවසීලන්ත කණ්ඩායම සමත් වුණා..",
+                "text": "Electric cars sales surge as oil prices rise.",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             },
             {
-                "text": "නවතම පුවත් ලැබුනු සැනින් එසැනින්.",
+                "text": "New breakthrough in quantum computing could change everything.",
                 "imageUrl": "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"
             }
         ];
@@ -109,7 +107,7 @@
         const newsContainer = document.getElementById("news-container");
         const newsImage = document.getElementById("news-image");
         const typingSpeed = 100;  // Speed of typewriter effect
-        const pauseBetweenNews = 20000; // Time to pause between news items
+        const pauseBetweenNews = 2000; // Time to pause between news items
         const defaultImageUrl = "https://cdn.pixabay.com/photo/2022/11/04/09/29/breaking-news-7569437_1280.jpg"; // Default image URL
 
         // Typewriter effect function
@@ -144,7 +142,7 @@
         // Adjust font size to fit the container
         function adjustFontSize() {
             const containerWidth = newsContainer.clientWidth;
-            let fontSize = 44; // Base font size
+            let fontSize = 24; // Base font size
             newsContainer.style.fontSize = `${fontSize}px`;
 
             while (newsContainer.scrollWidth > containerWidth && fontSize > 12) {
