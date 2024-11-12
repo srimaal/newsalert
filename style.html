@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flickr Profile Slideshow</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .slideshow-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            animation: fadeIn 1s;
+        }
+        .slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .navigation button {
+            padding: 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container" id="slideshowContainer">
+        <!-- Images will be inserted dynamically here -->
+    </div>
+    <div class="navigation">
+        <button onclick="changeSlide(-1)">Previous</button>
+        <button onclick="changeSlide(1)">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let slides = [];
+
+        // Fetch your Flickr profile images via the API
+        const apiKey = '130bcda9fdd236c59384f1c7f776c769'; // Replace with your Flickr API key
+        const userId = '201788631@N02'; // Replace with your Flickr User ID
+        const url = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=${apiKey}&user_id=${userId}&per_page=10&format=json&nojsoncallback=1`;
+
+        // Fetch images from your Flickr profile using the API
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const photos = data.photos.photo;
+                const slideshowContainer = document.getElementById('slideshowContainer');
+                slideshowContainer.innerHTML = ''; // Clear existing slides
+
+                photos.forEach((photo, index) => {
+                    const photoUrl = `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`;
+
+                    const slide = document.createElement('div');
+                    slide.classList.add('slide');
+                    if (index === 0) slide.classList.add('active');
+                    
+                    const img = document.createElement('img');
+                    img.src = photoUrl;
+                    img.alt = photo.title;
+                    
+                    slide.appendChild(img);
+                    slideshowContainer.appendChild(slide);
+                    slides.push(slide);
+                });
+            })
+            .catch(error => console.error('Error fetching Flickr data:', error));
+
+        // Change slide function
+        function changeSlide(direction) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Auto slide change every 20 seconds
+        setInterval(() => {
+            changeSlide(1);
+        }, 20000);
+
+        // Auto-refresh the page every 5 minutes (300000 milliseconds)
+        setTimeout(() => {
+            location.reload();  // Refresh the page
+        }, 300000);  // 5 minutes = 300,000 milliseconds
+    </script>
+</body>
+</html>
