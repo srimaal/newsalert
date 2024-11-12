@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Slideshow</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .slideshow-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            animation: fadeIn 1s;
+        }
+        .slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .navigation button {
+            padding: 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="slide active">
+            <img src="https://via.placeholder.com/800x400?text=Slide+1" alt="Slide 1">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+2" alt="Slide 2">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+3" alt="Slide 3">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+4" alt="Slide 4">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+5" alt="Slide 5">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+6" alt="Slide 6">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+7" alt="Slide 7">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+8" alt="Slide 8">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+9" alt="Slide 9">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+10" alt="Slide 10">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+11" alt="Slide 11">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+12" alt="Slide 12">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+13" alt="Slide 13">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+14" alt="Slide 14">
+        </div>
+        <div class="slide">
+            <img src="https://via.placeholder.com/800x400?text=Slide+15" alt="Slide 15">
+        </div>
+    </div>
+    <div class="navigation">
+        <button onclick="changeSlide(-1)">Previous</button>
+        <button onclick="changeSlide(1)">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function changeSlide(direction) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Auto slide change every 20 seconds
+        setInterval(() => {
+            changeSlide(1);
+        }, 20000);
+
+        // Auto-refresh the page every 5 minutes (300000 milliseconds)
+        setTimeout(() => {
+            location.reload();
+        }, 300000);
+    </script>
+</body>
+</html>
