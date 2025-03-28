@@ -1,33 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global News Aggregator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .news-container { max-width: 800px; margin: auto; }
+        .news-item { border-bottom: 1px solid #ccc; padding: 10px 0; }
+        a { text-decoration: none; color: #007bff; }
+    </style>
+</head>
+<body>
+    <h1>Latest News from Leading Sources</h1>
+    <div class="news-container" id="news"></div>
 
-const rssFeeds = [
-    "https://api.allorigins.win/get?url=" + encodeURIComponent("https://rss.nytimes.com/services/xml/rss/nyt/Science.xml"),
-    "https://api.allorigins.win/get?url=" + encodeURIComponent("https://www.yahoo.com/news/rss")
-];
+    <script>
+        const rssFeeds = [
+            "https://rss2json.com/api.json?rss_url=https://feeds.bbci.co.uk/news/rss.xml",
+            "https://rss2json.com/api.json?rss_url=http://rss.cnn.com/rss/edition.rss",
+            "https://rss2json.com/api.json?rss_url=https://www.reutersagency.com/feed/?best-regions=world"
+        ];
 
-async function fetchNews() {
-    let newsHTML = "";
-    for (let feed of rssFeeds) {
-        try {
-            const response = await fetch(feed);
-            const data = await response.json();
-            const parser = new DOMParser();
-            const xml = parser.parseFromString(data.contents, "application/xml");
-            const items = xml.querySelectorAll("item");
-
-            items.forEach((item, index) => {
-                if (index < 5) { // Limit articles per source
-                    const title = item.querySelector("title").textContent;
-                    const link = item.querySelector("link").textContent;
+        async function fetchNews() {
+            let newsHTML = "";
+            for (let feed of rssFeeds) {
+                const response = await fetch(feed);
+                const data = await response.json();
+                data.items.slice(0, 5).forEach(item => {
                     newsHTML += `<div class="news-item">
-                                    <h3><a href="${link}" target="_blank">${title}</a></h3>
+                                    <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+                                    <p>${item.pubDate}</p>
                                 </div>`;
-                }
-            });
-        } catch (error) {
-            console.error("Error fetching RSS:", error);
+                });
+            }
+            document.getElementById("news").innerHTML = newsHTML;
         }
-    }
-    document.getElementById("news").innerHTML = newsHTML;
-}
 
-fetchNews();
+        fetchNews();
+    </script>
+</body>
+</html>
