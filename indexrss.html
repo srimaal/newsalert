@@ -1,1 +1,33 @@
 
+const rssFeeds = [
+    "https://api.allorigins.win/get?url=" + encodeURIComponent("https://rss.nytimes.com/services/xml/rss/nyt/Science.xml"),
+    "https://api.allorigins.win/get?url=" + encodeURIComponent("https://www.yahoo.com/news/rss")
+];
+
+async function fetchNews() {
+    let newsHTML = "";
+    for (let feed of rssFeeds) {
+        try {
+            const response = await fetch(feed);
+            const data = await response.json();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(data.contents, "application/xml");
+            const items = xml.querySelectorAll("item");
+
+            items.forEach((item, index) => {
+                if (index < 5) { // Limit articles per source
+                    const title = item.querySelector("title").textContent;
+                    const link = item.querySelector("link").textContent;
+                    newsHTML += `<div class="news-item">
+                                    <h3><a href="${link}" target="_blank">${title}</a></h3>
+                                </div>`;
+                }
+            });
+        } catch (error) {
+            console.error("Error fetching RSS:", error);
+        }
+    }
+    document.getElementById("news").innerHTML = newsHTML;
+}
+
+fetchNews();
