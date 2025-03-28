@@ -12,29 +12,30 @@
     </style>
 </head>
 <body>
-    <h1>Latest News from Leading Sources</h1>
+    <h1>Latest International News</h1>
     <div class="news-container" id="news"></div>
 
     <script>
-        const rssFeeds = [
-            "https://rss2json.com/api.json?rss_url=https://www.yahoo.com/news/rss",
-            "https://rss2json.com/api.json?rss_url=http://rss.cnn.com/rss/edition.rss",
-            "https://rss2json.com/api.json?rss_url=https://www.reutersagency.com/feed/?best-regions=world"
-        ];
+        const apiKey = "YOUR_NEWSAPI_KEY"; // Replace with your actual API key
+        const url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=${apiKey}`;
 
         async function fetchNews() {
-            let newsHTML = "";
-            for (let feed of rssFeeds) {
-                const response = await fetch(feed);
+            try {
+                const response = await fetch(url);
                 const data = await response.json();
-                data.items.slice(0, 5).forEach(item => {
+                let newsHTML = "";
+
+                data.articles.forEach(article => {
                     newsHTML += `<div class="news-item">
-                                    <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
-                                    <p>${item.pubDate}</p>
+                                    <h3><a href="${article.url}" target="_blank">${article.title}</a></h3>
+                                    <p>${article.source.name}</p>
                                 </div>`;
                 });
+
+                document.getElementById("news").innerHTML = newsHTML;
+            } catch (error) {
+                console.error("Error fetching news:", error);
             }
-            document.getElementById("news").innerHTML = newsHTML;
         }
 
         fetchNews();
